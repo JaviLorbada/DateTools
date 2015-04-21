@@ -18,7 +18,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	//Time ago test
+    NSLog(@"in 10 months: %@", [[NSDate date] dateByAddingMonths:10].timeAheadFromNow);
+    NSLog(@"in 3 weeks: %@", [[NSDate date] dateByAddingWeeks:3].timeAheadFromNow);
+    NSLog(@"in 3 days: %@", [[NSDate date] dateByAddingDays:3].timeAheadFromNow);
+    NSLog(@"in 2 hours: %@", [[NSDate date] dateByAddingHours:2].timeAheadFromNow);
+    NSLog(@"in 5 minutes: %@", [[NSDate date] dateByAddingMinutes:5].timeAheadFromNow);
+    NSLog(@"in 1 second: %@", [[NSDate date] dateByAddingSeconds:1].timeAheadFromNow);
+    NSLog(@"just Ago: %@", [NSDate date].timeAheadFromNow);
+  
+    //Time ago test
     NSLog(@"10 months Ago: %@", [[NSDate date] dateBySubtractingMonths:10].timeAgoSinceNow);
     NSLog(@"8 weeks Ago: %@", [[NSDate date] dateBySubtractingWeeks:8].timeAgoSinceNow);
     NSLog(@"3 days Ago: %@", [[NSDate date] dateBySubtractingDays:3].timeAgoSinceNow);

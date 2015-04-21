@@ -238,6 +238,107 @@ static NSCalendar *implicitCalendar = nil;
     
 }
 
+/**
+ *  Returns a string with the most convenient unit of time representing
+ *  how far in the future that date is from now.
+ *
+ *  @return NSString - Formatted return string
+ */
+- (NSString*)timeAheadFromNow {
+  return [self timeAheadFromDate:[NSDate date]];
+}
+
+- (NSString *)timeAheadFromDate:(NSDate *)date {
+  return [self timeAheadFromDate:date numericDates:NO];
+}
+
+- (NSString *)timeAheadFromDate:(NSDate *)date numericDates:(BOOL)useNumericDates {
+  return [self timeAheadFromDate:date numericDates:useNumericDates numericTimes:NO];
+}
+
+- (NSString *)timeAheadFromDate:(NSDate *)date numericDates:(BOOL)useNumericDates numericTimes:(BOOL)useNumericTimes
+{
+  NSDate *earliest = [[self earlierDate:date] dateBySubtractingSeconds:1];
+  NSDate *latest = (earliest == self) ? date : self;
+  
+  if ([latest yearsFrom:earliest] >= 2) {
+    return  [latest logicLocalizedStringFromFormat:@"in %%d %@years" withValue:[latest yearsFrom:earliest]];
+  } else if ([latest yearsFrom:earliest] >=1) {
+    if (useNumericDates) {
+      
+      return DateToolsLocalizedStrings(@"in 1 year");
+    }
+    
+    return DateToolsLocalizedStrings(@"Next year");
+  }
+  else if ([latest monthsFrom:earliest] >= 2) {
+    return [latest logicLocalizedStringFromFormat:@"in %%d %@months" withValue:[latest monthsFrom:earliest]];
+  }
+  else if ([latest monthsFrom:earliest] >= 1) {
+    
+    if (useNumericDates) {
+      return DateToolsLocalizedStrings(@"in 1 month");
+    }
+    
+    return DateToolsLocalizedStrings(@"Next month");
+  }
+  else if ([latest weeksFrom:earliest] >= 2) {
+    return [latest logicLocalizedStringFromFormat:@"in %%d %@weeks" withValue:[latest weeksFrom:earliest]];
+  }
+  else if ([latest weeksFrom:earliest] >= 1) {
+    
+    if (useNumericDates) {
+      return DateToolsLocalizedStrings(@"in 1 week");
+    }
+    
+    return DateToolsLocalizedStrings(@"Next week");
+  }
+  else if ([latest daysFrom:earliest] >= 2) {
+    return [latest logicLocalizedStringFromFormat:@"in %%d %@days" withValue:[latest daysFrom:earliest]];
+  }
+  else if ([latest daysFrom:earliest] >= 1) {
+    
+    if (useNumericDates) {
+      return DateToolsLocalizedStrings(@"in 1 day");
+    }
+    
+    return DateToolsLocalizedStrings(@"Tomorrow");
+  }
+  else if ([latest hoursFrom:earliest] >= 2) {
+    return [latest logicLocalizedStringFromFormat:@"in %%d %@hours" withValue:[latest hoursFrom:earliest]];
+  }
+  else if ([latest hoursFrom:earliest] >= 1) {
+    
+    if (useNumericTimes) {
+      return DateToolsLocalizedStrings(@"in 1 hour");
+    }
+    
+    return DateToolsLocalizedStrings(@"Today");
+  }
+  else if ([latest minutesFrom:earliest] >= 2) {
+    return [latest logicLocalizedStringFromFormat:@"in %%d %@minutes" withValue:[latest minutesFrom:earliest]];
+  }
+  else if ([latest minutesFrom:earliest] >= 1) {
+    
+    if (useNumericTimes) {
+      return DateToolsLocalizedStrings(@"in 1 minute");
+    }
+    
+    return DateToolsLocalizedStrings(@"in a minute");
+  }
+  else if ([latest secondsFrom:earliest] >= 3) {
+    return [latest logicLocalizedStringFromFormat:@"in %%d %@seconds" withValue:[latest secondsFrom:earliest]];
+  }
+  else {
+    
+    if (useNumericTimes) {
+      return DateToolsLocalizedStrings(@"in 1 second");
+    }
+    
+    return DateToolsLocalizedStrings(@"Just now");
+  }
+}
+
 - (NSString *) logicLocalizedStringFromFormat:(NSString *)format withValue:(NSInteger)value{
     NSString * localeFormat = [NSString stringWithFormat:format, [self getLocaleFormatUnderscoresWithValue:value]];
     return [NSString stringWithFormat:DateToolsLocalizedStrings(localeFormat), value];
